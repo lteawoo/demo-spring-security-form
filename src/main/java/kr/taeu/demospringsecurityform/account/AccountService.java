@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -16,7 +17,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class AccountService implements UserDetailsService {
 
-    // TODO {noop}123 같은 형식으로 패스워드를 맞춰야함
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
     @Autowired
     AccountRepository accountRepository;
 
@@ -35,7 +38,7 @@ public class AccountService implements UserDetailsService {
     }
 
     public Account createNew(Account account) {
-        account.encodePassword();
+        account.encodePassword(passwordEncoder);
         return accountRepository.save(account);
     }
 }
