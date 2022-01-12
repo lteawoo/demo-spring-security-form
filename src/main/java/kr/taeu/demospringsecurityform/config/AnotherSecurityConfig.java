@@ -9,24 +9,18 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
-@EnableWebSecurity
 @Configuration
-@Order(Ordered.LOWEST_PRECEDENCE - 100)
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+@Order(Ordered.LOWEST_PRECEDENCE - 15)
+public class AnotherSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     AccountService accountService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .mvcMatchers("/", "/info", "/account/**").permitAll()
-                .mvcMatchers("/admin").hasRole("ADMIN")
-                .anyRequest().authenticated()
-                .and()
-            .formLogin()
-                .and()
-            .httpBasic();
+        http.antMatcher("/account/**")
+                .authorizeRequests()
+                .anyRequest().permitAll();
     }
 
 //    @Override
